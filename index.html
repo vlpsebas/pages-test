@@ -1,12 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
-</head>
-<body>
-    <h1>Hello, World!</h1>
-</body>
+    <style>
+        h1 {
+            color: blue;
+            text-align: center;
+        }
+        h2 {
+            color: rebeccapurple;
+            text-align: center;
+        }
+
+        h3 {
+            color: red;
+            text-align: center;
+        }
+
+        iframe {
+            text-align: center;
+        }
+
+        a {
+            text-align: center;
+        }
+        .container {
+            border: 2px solid black;
+            height: 600px;
+            position: absolute;
+        }
+    </style>
+    </head>
+    <body>
+    <h1>
+        Please submit a temperature reading.
+    </h1>
+    <h3>Note: Make sure the readings follow this format: <br>
+        "temperature": 36.3, <br>
+        "time": "2020-09-28T02:57:49Z"
+    </h3>
+<br>
+<br>
+    <h2>Today's temp</h2>
+    <form action="/submit" method="POST">
+        <input type="text" placeholder="username" />
+        <input type="password" placeholder="password" />
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAA4xZwlByN75XeEv"></div>
+        <button type="submit" value="Submit">Log in</button>
+    </form>
+    </body>
 </html>

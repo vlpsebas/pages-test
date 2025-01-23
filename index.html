@@ -57,5 +57,48 @@
         <input type="time" placeholder="2020-09-28T02:57:49Z" />
         <button type="submit" value="Submit">Submit reading</button>
     </form>
+
+    <script>
+        document.getElementById('temperature-form').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const temperature = document.getElementById('temperature').value;
+            const time = document.getElementById('time').value;
+
+            if (!temperature || !time) {
+                alert("Both temperature and time are required!");
+                return;
+            }
+
+            // Replace with your Cloudflare Worker API URL
+            const apiUrl = "https://sunnylx.com/temps";
+
+            const payload = {
+                temperature: parseFloat(temperature),
+                time: time
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const result = await response.text();
+                    alert("Temperature added successfully: " + result);
+                } else {
+                    const error = await response.text();
+                    alert("Failed to add temperature: " + error);
+                }
+            } catch (error) {
+                console.error("Error submitting temperature:", error);
+                alert("An unexpected error occurred.");
+            }
+        });
+    </script>
     </body>
 </html>

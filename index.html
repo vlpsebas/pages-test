@@ -52,52 +52,44 @@
 <br>
 <br>
     <h2>Today's temp</h2>
-    <form action="/submit" method="POST">
-        <input type="number" placeholder="temperature" step="0.1" />
-        <input type="time" placeholder="2020-09-28T02:57:49Z" />
-        <button type="submit" value="Submit">Submit reading</button>
+    <form id="temperature-form" action="https://chatgpt-api.vsebas.workers.dev/" method="POST">
+      <input id="temperature" type="number" placeholder="temperature" step="0.1" required />
+      <input id="time" type="datetime-local" placeholder="time" required />
+      <button type="submit" value="Submit">Submit reading</button>
     </form>
 
     <script>
         document.getElementById('temperature-form').addEventListener('submit', async function (event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            const temperature = document.getElementById('temperature').value;
-            const time = document.getElementById('time').value;
-
-            if (!temperature || !time) {
-                alert("Both temperature and time are required!");
-                return;
+          event.preventDefault(); // Prevent default form submission
+        
+          const temperature = document.getElementById('temperature').value;
+          const time = document.getElementById('time').value;
+        
+          if (!temperature || !time) {
+            alert("Both temperature and time are required!");
+            return;
+          }
+        
+          try {
+            const response = await fetch("https://chatgpt-api.vsebas.workers.dev/", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ temperature: parseFloat(temperature), time }),
+            });
+        
+            if (response.ok) {
+              const result = await response.text();
+              alert("Temperature added successfully: " + result);
+            } else {
+              const error = await response.text();
+              alert("Failed to add temperature: " + error);
             }
-
-            // Replace with your Cloudflare Worker API URL
-            const apiUrl = "https://sunnylx.com/temps";
-
-            const payload = {
-                temperature: parseFloat(temperature),
-                time: time
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (response.ok) {
-                    const result = await response.text();
-                    alert("Temperature added successfully: " + result);
-                } else {
-                    const error = await response.text();
-                    alert("Failed to add temperature: " + error);
-                }
-            } catch (error) {
-                console.error("Error submitting temperature:", error);
-                alert("An unexpected error occurred.");
-            }
+          } catch (error) {
+            console.error("Error submitting temperature:", error);
+            alert("An unexpected error occurred.");
+          }
         });
     </script>
     </body>
